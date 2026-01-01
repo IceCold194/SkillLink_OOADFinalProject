@@ -12,9 +12,54 @@ namespace SkillLink_OOADFinalProject
 {
     public partial class Form1 : Form
     {
+        private SkillLinkManager manager = new SkillLinkManager();
+
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void buttonAddTrainee_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string name = textBoxTraineeName.Text;
+                string contact = textBoxTraineeContact.Text;
+                manager.AddTrainee(name, contact);
+                MessageBox.Show($"Trainee {name} added with ID {manager.Trainees[manager.Trainees.Count - 1].ID}");
+
+                // Refresh the DataGridView named dgvTrainees
+                dataGridViewTrainees.DataSource = null;
+                dataGridViewTrainees.DataSource = manager.Trainees;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonCertify_Click(object sender, EventArgs e)
+        {
+            // Assume you get the ID from a selected row or textbox
+            if (int.TryParse(textBoxTraineeToCertify.Text, out int id))
+            {
+                // Example certification for the IT course
+                bool success = manager.MarkCertified(id, "Computer Literacy 101");
+                if (success)
+                {
+                    MessageBox.Show($"Trainee ID {id} has been certified!");
+                    // Refresh display
+                }
+                else
+                {
+                    MessageBox.Show("Trainee not found. Select a row to Certify");
+                }
+            }
+        }
+
+        private void dataGridViewTrainees_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
