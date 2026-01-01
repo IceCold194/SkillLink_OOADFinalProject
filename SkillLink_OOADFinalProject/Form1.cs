@@ -40,15 +40,12 @@ namespace SkillLink_OOADFinalProject
 
         private void buttonCertify_Click(object sender, EventArgs e)
         {
-            // Assume you get the ID from a selected row or textbox
             if (int.TryParse(textBoxTraineeToCertify.Text, out int id))
             {
-                // Example certification for the IT course
                 bool success = manager.MarkCertified(id, "Computer Literacy 101");
                 if (success)
                 {
                     MessageBox.Show($"Trainee ID {id} has been certified!");
-                    // Refresh display
                 }
                 else
                 {
@@ -59,7 +56,15 @@ namespace SkillLink_OOADFinalProject
 
         private void dataGridViewTrainees_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewTrainees.Rows[e.RowIndex];
 
+                if (row.DataBoundItem is Trainee selectedTrainee)
+                {
+                    textBoxTraineeToCertify.Text = selectedTrainee.ID.ToString();
+                }
+            }
         }
     }
 }
